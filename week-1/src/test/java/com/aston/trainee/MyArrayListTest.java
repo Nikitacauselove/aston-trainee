@@ -1,4 +1,4 @@
-package com.aston.trainee.arraylist;
+package com.aston.trainee;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package com.aston.trainee.arraylist;
+package com.aston.trainee;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -159,8 +159,6 @@ public class MyArrayList<E> {
      *          {@linkplain Comparable natural ordering} should be used
      * @throws ClassCastException if the list contains elements that are not
      *         <i>mutually comparable</i> using the specified comparator
-     * @throws UnsupportedOperationException if the list's list-iterator does
-     *         not support the {@code set} operation
      * @throws IllegalArgumentException
      *         (<a href="Collection.html#optional-restrictions">optional</a>)
      *         if the comparator is found to violate the {@link Comparator}
