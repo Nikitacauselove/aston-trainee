@@ -56,8 +56,8 @@ public class MyLinkedList<E> {
     public void addAll(Collection<? extends E> collection) {
         Object[] array = collection.toArray();
 
-        for (int i = 0; i < array.length; i++) {
-            addLast((E) array[i]);
+        for (Object object : array) {
+            addLast((E) object);
         }
     }
 
@@ -219,8 +219,8 @@ public class MyLinkedList<E> {
         clear();
         Arrays.sort(array, comparator);
 
-        for (int i = 0; i < array.length; i++) {
-            addLast(array[i]);
+        for (E element : array) {
+            addLast(element);
         }
     }
 }

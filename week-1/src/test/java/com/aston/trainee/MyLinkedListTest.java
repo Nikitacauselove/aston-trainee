@@ -4,49 +4,45 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MyLinkedListTest {
-    LinkedList<Integer> test;
-
     private MyLinkedList<Integer> linkedList;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         linkedList = new MyLinkedList<>();
     }
 
     @Test
-    public void toArray() {
+    void toArray() {
         linkedList.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
 
         Assertions.assertArrayEquals(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, linkedList.toArray());
     }
 
     @Test
-    public void get() {
+    void get() {
         linkedList.add(1);
 
         Assertions.assertEquals(1, linkedList.get(0));
     }
 
     @Test
-    public void getIndexOutOfBounds() {
+    void getIndexOutOfBounds() {
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> linkedList.get(Integer.MAX_VALUE));
         Assertions.assertThrows(IndexOutOfBoundsException.class, () -> linkedList.get(Integer.MIN_VALUE));
     }
 
     @Test
-    public void add() {
+    void add() {
         linkedList.add(1);
 
         Assertions.assertArrayEquals(new Integer[]{1}, linkedList.toArray());
     }
 
     @Test
-    public void addAtPosition() {
+    void addAtPosition() {
         linkedList.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
         linkedList.add(0, 0);
 
@@ -54,7 +50,7 @@ public class MyLinkedListTest {
     }
 
     @Test
-    public void remove() {
+    void remove() {
         linkedList.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
         linkedList.remove(1);
 
@@ -62,7 +58,7 @@ public class MyLinkedListTest {
     }
 
     @Test
-    public void clear() {
+    void clear() {
         linkedList.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
         linkedList.clear();
 
@@ -70,14 +66,14 @@ public class MyLinkedListTest {
     }
 
     @Test
-    public void addAll() {
+    void addAll() {
         linkedList.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
 
         Assertions.assertArrayEquals(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, linkedList.toArray());
     }
 
     @Test
-    public void sort() {
+    void sort() {
         linkedList.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11));
         linkedList.sort((a, b) -> b - a);
 

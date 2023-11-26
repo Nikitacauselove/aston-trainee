@@ -31,9 +31,7 @@ public class MyArrayList<E> {
         int newCapacity = Math.max(minCapacity, size) + size % 2;
         Object[] array = new Object[newCapacity];
 
-        for (int i = 0; i < size; i++) {
-            array[i] = elementData[i];
-        }
+        System.arraycopy(elementData, 0, array, 0, size);
         return array;
     }
 
@@ -47,9 +45,7 @@ public class MyArrayList<E> {
     public Object[] toArray() {
         Object[] array = new Object[size];
 
-        for (int i = 0; i < size; i++) {
-            array[i] = elementData[i];
-        }
+        System.arraycopy(elementData, 0, array, 0, size);
         return array;
     }
 
@@ -96,9 +92,7 @@ public class MyArrayList<E> {
         if (size == elementData.length) {
             elementData = grow(size);
         }
-        for (int i = size; index < i; i--) {
-            elementData[i] = elementData[i-1];
-        }
+        System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
         size++;
     }
@@ -115,9 +109,7 @@ public class MyArrayList<E> {
     public void remove(int index) {
         Objects.checkIndex(index, elementData.length);
 
-        for (int i = index; i < size - 1; i++) {
-            elementData[i] = elementData[i+1];
-        }
+        System.arraycopy(elementData, index + 1, elementData, index, size - index - 1);
         elementData[--size] = null;
     }
 
