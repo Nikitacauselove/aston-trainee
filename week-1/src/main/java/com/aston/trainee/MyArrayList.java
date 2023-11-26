@@ -28,7 +28,7 @@ public class MyArrayList<E> {
      * @param minCapacity the desired minimum capacity
      */
     private Object[] grow(int minCapacity) {
-        int newCapacity = Math.max(minCapacity, size) + size % 2;
+        int newCapacity = Math.max(minCapacity, size) + size / 2;
         Object[] array = new Object[newCapacity];
 
         System.arraycopy(elementData, 0, array, 0, size);
@@ -60,7 +60,7 @@ public class MyArrayList<E> {
      * @param  index index of the element to return
      * @return the element at the specified position in this list
      * @throws IndexOutOfBoundsException if the index is out of range
-     *         ({@code index < 0 || index >= size()})
+     *         ({@code index < 0 || index >= size})
      */
     public E get(int index) {
         Objects.checkIndex(index, elementData.length);
@@ -84,13 +84,13 @@ public class MyArrayList<E> {
      * @param index index at which the specified element is to be inserted
      * @param element element to be inserted
      * @throws IndexOutOfBoundsException if the index is out of range
-     *         ({@code index < 0 || index >= size()})
+     *         ({@code index < 0 || index >= size})
      */
     public void add(int index, E element) {
         Objects.checkIndex(index, elementData.length);
 
-        if (size == elementData.length) {
-            elementData = grow(size);
+        if (elementData.length <= size + 1) {
+            elementData = grow(size + 1);
         }
         System.arraycopy(elementData, index, elementData, index + 1, size - index);
         elementData[index] = element;
@@ -104,7 +104,7 @@ public class MyArrayList<E> {
      *
      * @param index the index of the element to be removed
      * @throws IndexOutOfBoundsException if the index is out of range
-     *         ({@code index < 0 || index >= size()})
+     *         ({@code index < 0 || index >= size})
      */
     public void remove(int index) {
         Objects.checkIndex(index, elementData.length);
@@ -137,9 +137,8 @@ public class MyArrayList<E> {
         if (elementData.length < size + array.length) {
             elementData = grow(size + array.length);
         }
-        for (int i = 0; i < collection.size(); i++) {
-            elementData[size++] = array[i];
-        }
+        System.arraycopy(array, 0, elementData, size, array.length);
+        size = size + array.length;
     }
 
     /**
