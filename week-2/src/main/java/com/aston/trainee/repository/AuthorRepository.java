@@ -77,4 +77,22 @@ public class AuthorRepository implements BaseRepository<Author> {
             System.out.println("При удалении автора возникла ошибка");
         }
     }
+
+    public Author readById(Long id) {
+        Author author = new Author();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("select * from author where id = ?");
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                author.setId(resultSet.getLong("id"));
+                author.setName(resultSet.getString("name"));
+            }
+        } catch (SQLException exception) {
+            System.out.println("При получении подробной информации об авторе возникла ошибка");
+        }
+        return author;
+    }
 }

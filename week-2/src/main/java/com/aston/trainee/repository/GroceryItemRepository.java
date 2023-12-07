@@ -77,4 +77,43 @@ public class GroceryItemRepository implements BaseRepository<GroceryItem> {
             System.out.println("При удалении товара возникла ошибка");
         }
     }
+
+    public GroceryItem readByName(String name) {
+        GroceryItem groceryItem = new GroceryItem();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("select * from item where name = ?");
+
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                groceryItem.setId(resultSet.getLong("id"));
+                groceryItem.setName(resultSet.getString("name"));
+            }
+        } catch (SQLException exception) {
+            System.out.println("При получении подробной информации о товаре по его названию возникла ошибка");
+        }
+        return groceryItem;
+    }
+
+    public List<GroceryItem> readByListId(Long listId) {
+        List<GroceryItem> groceryItems = new ArrayList<>();
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("select id, name from list_item left join item on list_item.item.id = item.id where list.id = ?");
+
+            statement.setLong(1, listId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                GroceryItem groceryItem = new GroceryItem();
+
+                groceryItem.setId(resultSet.getLong("id"));
+                groceryItem.setName(resultSet.getString("name"));
+                groceryItems.add(groceryItem);
+            }
+        } catch (SQLException exception) {
+            System.out.println("При поиске товаров по идентификатору списка покупок возникла ошибка");
+        }
+        return groceryItems;
+    }
 }
