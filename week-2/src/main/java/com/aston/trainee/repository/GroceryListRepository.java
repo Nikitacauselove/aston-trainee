@@ -16,7 +16,6 @@ import java.util.List;
 public class GroceryListRepository implements BaseRepository<GroceryList> {
     private final static String INSERT_SQL = "insert into list (author_id) values (?)";
     private final static String SELECT_SQL = "select * from list";
-    private final static String UPDATE_SQL = "update author set name = ? where id = ?";
     private final static String DELETE_SQL = "delete from list where id = ?";
 
     private final AuthorRepository authorRepository = new AuthorRepository();
@@ -69,7 +68,22 @@ public class GroceryListRepository implements BaseRepository<GroceryList> {
     }
 
     public GroceryList update(GroceryList groceryList) {
-        return null;
+        try (Connection connection = connectionManager.getConnection()) {
+            PreparedStatement deleteRelationshipStatement = connection.prepareStatement("delete from list_item where list_id = ?");
+            PreparedStatement relationshipStatement = connection.prepareStatement("insert into list_item (list_id, item_id) values (?, ?)");
+
+            deleteRelationshipStatement.setLong(1, groceryList.getId());
+            deleteRelationshipStatement.executeUpdate();
+
+            for (GroceryItem groceryItem : groceryList.getItems()) {
+                relationshipStatement.setLong(1, groceryList.getId());
+                relationshipStatement.setLong(2, groceryItem.getId());
+                relationshipStatement.executeUpdate();
+            }
+        } catch (SQLException exception) {
+            System.out.println("При изменении информации о списке покупок возникла ошибка");
+        }
+        return groceryList;
     }
 
     public void delete(Long id) {

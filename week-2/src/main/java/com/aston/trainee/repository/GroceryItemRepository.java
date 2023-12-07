@@ -99,7 +99,7 @@ public class GroceryItemRepository implements BaseRepository<GroceryItem> {
     public List<GroceryItem> readByListId(Long listId) {
         List<GroceryItem> groceryItems = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement("select id, name from list_item left join item on list_item.item.id = item.id where list.id = ?");
+            PreparedStatement statement = connection.prepareStatement("select id, name from list_item left join item on list_item.item_id = item.id where list_item.list_id = ?");
 
             statement.setLong(1, listId);
             ResultSet resultSet = statement.executeQuery();
