@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuthorRepository implements BaseRepository<Author> {
-    private final static String INSERT_SQL = "insert into author (name, surname) values (?, ?)";
+    private final static String INSERT_SQL = "insert into author (name) values (?)";
     private final static String SELECT_SQL = "select * from author";
-    private final static String UPDATE_SQL = "update author set name = ?, surname = ? where id = ?";
-    private final static String DELETE_SQL = "delete from films where id = ?";
+    private final static String UPDATE_SQL = "update author set name = ? where id = ?";
+    private final static String DELETE_SQL = "delete from author where id = ?";
 
     private final ConnectionManager connectionManager = new ConnectionManager();
 
@@ -24,7 +24,6 @@ public class AuthorRepository implements BaseRepository<Author> {
             PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
 
             statement.setString(1, author.getName());
-            statement.setString(2, author.getSurname());
             statement.executeUpdate();
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -47,7 +46,6 @@ public class AuthorRepository implements BaseRepository<Author> {
 
                 author.setId(resultSet.getLong("id"));
                 author.setName(resultSet.getString("name"));
-                author.setSurname(resultSet.getString("surname"));
                 authors.add(author);
             }
         } catch (SQLException exception) {
@@ -56,16 +54,13 @@ public class AuthorRepository implements BaseRepository<Author> {
         return authors;
     }
 
-    public Author update(Long id, Author updatedAuthor) {
+    public Author update(Author updatedAuthor) {
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(UPDATE_SQL);
 
             statement.setString(1, updatedAuthor.getName());
-            statement.setString(2, updatedAuthor.getSurname());
-            statement.setLong(3, id);
+            statement.setLong(2, updatedAuthor.getId());
             statement.executeUpdate();
-
-            updatedAuthor.setId(id);
         } catch (SQLException exception) {
             System.out.println("При изменении информации об авторе возникла ошибка");
         }

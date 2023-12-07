@@ -7,7 +7,7 @@ public interface BaseRepository<T> {
 
     List<T> read();
 
-    T update(Long id, T entity);
+    T update(T entity);
 
     void delete(Long id);
 }

@@ -1,7 +1,6 @@
 package com.aston.trainee.mapper;
 
 import com.aston.trainee.dto.AuthorDto;
-import com.aston.trainee.dto.AuthorShortDto;
 import com.aston.trainee.entity.Author;
 import lombok.experimental.UtilityClass;
 
@@ -9,21 +8,19 @@ import java.util.List;
 
 @UtilityClass
 public class AuthorMapper {
-    public Author toAuthor(AuthorShortDto authorShortDto) {
+    public Author toAuthor(Long id, AuthorDto authorDto) {
         Author author = new Author();
 
-        author.setName(authorShortDto.getName());
-        author.setSurname(authorShortDto.getSurname());
+        author.setId(id);
+        author.setName(authorDto.getName());
         return author;
     }
 
     public AuthorDto toAuthorDto(Author author) {
-        AuthorDto.AuthorDtoBuilder<?, ?> authorDto = AuthorDto.builder();
+        AuthorDto authorDto = new AuthorDto();
 
-        authorDto.id(author.getId());
-        authorDto.name(author.getName());
-        authorDto.surname(author.getSurname());
-        return authorDto.build();
+        authorDto.setName(author.getName());
+        return authorDto;
     }
 
     public List<AuthorDto> toAuthorDto(List<Author> authors) {

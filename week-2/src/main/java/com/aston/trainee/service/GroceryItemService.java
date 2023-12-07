@@ -1,18 +1,17 @@
 package com.aston.trainee.service;
 
 import com.aston.trainee.dto.GroceryItemDto;
-import com.aston.trainee.dto.GroceryItemShortDto;
 import com.aston.trainee.entity.GroceryItem;
 import com.aston.trainee.mapper.GroceryItemMapper;
 import com.aston.trainee.repository.GroceryItemRepository;
 
 import java.util.List;
 
-public class GroceryItemService implements BaseService<GroceryItemShortDto, GroceryItemDto> {
+public class GroceryItemService implements BaseService<GroceryItemDto> {
     private final GroceryItemRepository groceryItemRepository = new GroceryItemRepository();
 
-    public GroceryItemDto create(GroceryItemShortDto groceryItemShortDto) {
-        GroceryItem groceryItem = GroceryItemMapper.toGroceryItem(groceryItemShortDto);
+    public GroceryItemDto create(GroceryItemDto groceryItemDto) {
+        GroceryItem groceryItem = GroceryItemMapper.toGroceryItem(null, groceryItemDto);
 
         return GroceryItemMapper.toGroceryItemDto(groceryItemRepository.create(groceryItem));
     }
@@ -21,10 +20,10 @@ public class GroceryItemService implements BaseService<GroceryItemShortDto, Groc
         return GroceryItemMapper.toGroceryItemDto(groceryItemRepository.read());
     }
 
-    public GroceryItemDto update(Long id, GroceryItemShortDto groceryItemShortDto) {
-        GroceryItem updatedGroceryItem = GroceryItemMapper.toGroceryItem(groceryItemShortDto);
+    public GroceryItemDto update(Long id, GroceryItemDto groceryItemDto) {
+        GroceryItem updatedGroceryItem = GroceryItemMapper.toGroceryItem(id, groceryItemDto);
 
-        return GroceryItemMapper.toGroceryItemDto(groceryItemRepository.update(id, updatedGroceryItem));
+        return GroceryItemMapper.toGroceryItemDto(groceryItemRepository.update(updatedGroceryItem));
     }
 
     public void delete(Long id) {

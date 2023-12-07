@@ -1,10 +1,12 @@
 package com.aston.trainee.dto;
 
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@SuperBuilder
-public class GroceryItemDto extends GroceryItemShortDto {
-    private Long id;
+@NoArgsConstructor
+@Setter
+public class GroceryItemDto {
+    private String name;
 }

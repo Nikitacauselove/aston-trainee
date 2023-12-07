@@ -1,6 +1,6 @@
 package com.aston.trainee.servlet;
 
-import com.aston.trainee.dto.AuthorShortDto;
+import com.aston.trainee.dto.AuthorDto;
 import com.aston.trainee.service.AuthorService;
 import com.aston.trainee.util.JsonHttpMessageHelper;
 
@@ -17,10 +17,10 @@ public class AuthorServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        AuthorShortDto authorShortDto = messageHelper.read(req, AuthorShortDto.class);
+        AuthorDto authorDto = messageHelper.read(req, AuthorDto.class);
 
         resp.setStatus(HttpServletResponse.SC_CREATED);
-        messageHelper.write(resp, authorService.create(authorShortDto));
+        messageHelper.write(resp, authorService.create(authorDto));
     }
 
     @Override
@@ -30,10 +30,10 @@ public class AuthorServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        AuthorShortDto authorShortDto = messageHelper.read(req, AuthorShortDto.class);
+        AuthorDto authorDto = messageHelper.read(req, AuthorDto.class);
         Long authorId = Long.parseLong(req.getPathInfo().substring(1));
 
-        messageHelper.write(resp, authorService.update(authorId, authorShortDto));
+        messageHelper.write(resp, authorService.update(authorId, authorDto));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.aston.trainee.mapper;
 
 import com.aston.trainee.dto.GroceryItemDto;
-import com.aston.trainee.dto.GroceryItemShortDto;
 import com.aston.trainee.entity.GroceryItem;
 import lombok.experimental.UtilityClass;
 
@@ -9,19 +8,19 @@ import java.util.List;
 
 @UtilityClass
 public class GroceryItemMapper {
-    public GroceryItem toGroceryItem(GroceryItemShortDto groceryItemShortDto) {
+    public GroceryItem toGroceryItem(Long id, GroceryItemDto groceryItemDto) {
         GroceryItem groceryItem = new GroceryItem();
 
-        groceryItem.setName(groceryItemShortDto.getName());
+        groceryItem.setId(id);
+        groceryItem.setName(groceryItemDto.getName());
         return groceryItem;
     }
 
     public GroceryItemDto toGroceryItemDto(GroceryItem groceryItem) {
-        GroceryItemDto.GroceryItemDtoBuilder<?, ?> itemDto = GroceryItemDto.builder();
+        GroceryItemDto groceryItemDto = new GroceryItemDto();
 
-        itemDto.id(groceryItem.getId());
-        itemDto.name(groceryItem.getName());
-        return itemDto.build();
+        groceryItemDto.setName(groceryItem.getName());
+        return groceryItemDto;
     }
 
     public List<GroceryItemDto> toGroceryItemDto(List<GroceryItem> groceryItems) {

@@ -1,6 +1,6 @@
 package com.aston.trainee.servlet;
 
-import com.aston.trainee.dto.GroceryItemShortDto;
+import com.aston.trainee.dto.GroceryItemDto;
 import com.aston.trainee.service.GroceryItemService;
 import com.aston.trainee.util.JsonHttpMessageHelper;
 
@@ -17,10 +17,10 @@ public class GroceryItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        GroceryItemShortDto groceryItemShortDto = messageHelper.read(req, GroceryItemShortDto.class);
+        GroceryItemDto groceryItemDto = messageHelper.read(req, GroceryItemDto.class);
 
         resp.setStatus(HttpServletResponse.SC_CREATED);
-        messageHelper.write(resp, groceryItemService.create(groceryItemShortDto));
+        messageHelper.write(resp, groceryItemService.create(groceryItemDto));
     }
 
     @Override
@@ -30,10 +30,10 @@ public class GroceryItemServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        GroceryItemShortDto groceryItemShortDto = messageHelper.read(req, GroceryItemShortDto.class);
+        GroceryItemDto groceryItemDto = messageHelper.read(req, GroceryItemDto.class);
         Long itemId = Long.parseLong(req.getPathInfo().substring(1));
 
-        messageHelper.write(resp, groceryItemService.update(itemId, groceryItemShortDto));
+        messageHelper.write(resp, groceryItemService.update(itemId, groceryItemDto));
     }
 
     @Override

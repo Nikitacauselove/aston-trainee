@@ -54,15 +54,13 @@ public class GroceryItemRepository implements BaseRepository<GroceryItem> {
         return groceryItems;
     }
 
-    public GroceryItem update(Long id, GroceryItem updatedGroceryItem) {
+    public GroceryItem update(GroceryItem updatedGroceryItem) {
         try (Connection connection = connectionManager.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(UPDATE_SQL);
 
             statement.setString(1, updatedGroceryItem.getName());
-            statement.setLong(2, id);
+            statement.setLong(2, updatedGroceryItem.getId());
             statement.executeUpdate();
-
-            updatedGroceryItem.setId(id);
         } catch (SQLException exception) {
             System.out.println("При изменении информации о товаре возникла ошибка");
         }
