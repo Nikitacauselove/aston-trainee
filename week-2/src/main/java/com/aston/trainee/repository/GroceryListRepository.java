@@ -20,7 +20,15 @@ public class GroceryListRepository implements BaseRepository<GroceryList> {
 
     private final AuthorRepository authorRepository = new AuthorRepository();
     private final GroceryItemRepository groceryItemRepository = new GroceryItemRepository();
-    private final ConnectionManager connectionManager = new ConnectionManager();
+    private final ConnectionManager connectionManager;
+
+    public GroceryListRepository() {
+        this.connectionManager = new ConnectionManager();
+    }
+
+    public GroceryListRepository(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+    }
 
     public GroceryList create(GroceryList groceryList) {
         try (Connection connection = connectionManager.getConnection()) {

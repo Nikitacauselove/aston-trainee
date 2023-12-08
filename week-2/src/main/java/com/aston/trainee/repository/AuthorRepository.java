@@ -17,7 +17,15 @@ public class AuthorRepository implements BaseRepository<Author> {
     private final static String UPDATE_SQL = "update author set name = ? where id = ?";
     private final static String DELETE_SQL = "delete from author where id = ?";
 
-    private final ConnectionManager connectionManager = new ConnectionManager();
+    private final ConnectionManager connectionManager;
+
+    public AuthorRepository() {
+        this.connectionManager = new ConnectionManager();
+    }
+
+    public AuthorRepository(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+    }
 
     public Author create(Author author) {
         try (Connection connection = connectionManager.getConnection()) {

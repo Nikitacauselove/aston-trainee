@@ -17,7 +17,15 @@ public class GroceryItemRepository implements BaseRepository<GroceryItem> {
     private final static String UPDATE_SQL = "update item set name = ? where id = ?";
     private final static String DELETE_SQL = "delete from item where id = ?";
 
-    private final ConnectionManager connectionManager = new ConnectionManager();
+    private final ConnectionManager connectionManager;
+
+    public GroceryItemRepository() {
+        this.connectionManager = new ConnectionManager();
+    }
+
+    public GroceryItemRepository(ConnectionManager connectionManager) {
+        this.connectionManager = new ConnectionManager();
+    }
 
     public GroceryItem create(GroceryItem groceryItem) {
         try (Connection connection = connectionManager.getConnection()) {
