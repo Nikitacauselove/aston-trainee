@@ -8,7 +8,15 @@ import com.aston.trainee.repository.GroceryItemRepository;
 import java.util.List;
 
 public class GroceryItemService implements BaseService<GroceryItemDto> {
-    private final GroceryItemRepository groceryItemRepository = new GroceryItemRepository();
+    private final GroceryItemRepository groceryItemRepository;
+
+    public GroceryItemService() {
+        this.groceryItemRepository = new GroceryItemRepository();
+    }
+
+    public GroceryItemService(GroceryItemRepository groceryItemRepository) {
+        this.groceryItemRepository = groceryItemRepository;
+    }
 
     public GroceryItemDto create(GroceryItemDto groceryItemDto) {
         GroceryItem groceryItem = GroceryItemMapper.toGroceryItem(null, groceryItemDto);

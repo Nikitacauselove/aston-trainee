@@ -8,7 +8,15 @@ import com.aston.trainee.repository.AuthorRepository;
 import java.util.List;
 
 public class AuthorService implements BaseService<AuthorDto> {
-    private final AuthorRepository authorRepository = new AuthorRepository();
+    private final AuthorRepository authorRepository;
+
+    public AuthorService() {
+        this.authorRepository = new AuthorRepository();
+    }
+
+    public AuthorService(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
 
     public AuthorDto create(AuthorDto authorDto) {
         Author author = AuthorMapper.toAuthor(null, authorDto);

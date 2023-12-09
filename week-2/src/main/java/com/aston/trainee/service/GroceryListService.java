@@ -12,9 +12,21 @@ import com.aston.trainee.repository.GroceryListRepository;
 import java.util.List;
 
 public class GroceryListService implements BaseService<GroceryListDto> {
-    private final AuthorRepository authorRepository = new AuthorRepository();
-    private final GroceryItemRepository groceryItemRepository = new GroceryItemRepository();
-    private final GroceryListRepository groceryListRepository = new GroceryListRepository();
+    private final AuthorRepository authorRepository;
+    private final GroceryItemRepository groceryItemRepository;
+    private final GroceryListRepository groceryListRepository;
+
+    public GroceryListService() {
+        this.authorRepository = new AuthorRepository();
+        this.groceryItemRepository = new GroceryItemRepository();
+        this.groceryListRepository = new GroceryListRepository();
+    }
+
+    public GroceryListService(AuthorRepository authorRepository, GroceryItemRepository groceryItemRepository, GroceryListRepository groceryListRepository) {
+        this.authorRepository = authorRepository;
+        this.groceryItemRepository = groceryItemRepository;
+        this.groceryListRepository = groceryListRepository;
+    }
 
     public GroceryListDto create(GroceryListDto groceryListDto) {
         Author author = authorRepository.readById(groceryListDto.getAuthorId());

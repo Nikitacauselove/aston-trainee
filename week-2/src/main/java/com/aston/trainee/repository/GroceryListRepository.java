@@ -18,16 +18,20 @@ public class GroceryListRepository implements BaseRepository<GroceryList> {
     private final static String SELECT_SQL = "select * from list";
     private final static String DELETE_SQL = "delete from list where id = ?";
 
-    private final AuthorRepository authorRepository = new AuthorRepository();
-    private final GroceryItemRepository groceryItemRepository = new GroceryItemRepository();
+    private final AuthorRepository authorRepository;
+    private final GroceryItemRepository groceryItemRepository;
     private final ConnectionManager connectionManager;
 
     public GroceryListRepository() {
         this.connectionManager = new ConnectionManager();
+        this.authorRepository = new AuthorRepository();
+        this.groceryItemRepository = new GroceryItemRepository();
     }
 
-    public GroceryListRepository(ConnectionManager connectionManager) {
+    public GroceryListRepository(ConnectionManager connectionManager, AuthorRepository authorRepository, GroceryItemRepository groceryItemRepository) {
         this.connectionManager = connectionManager;
+        this.authorRepository = authorRepository;
+        this.groceryItemRepository = groceryItemRepository;
     }
 
     public GroceryList create(GroceryList groceryList) {

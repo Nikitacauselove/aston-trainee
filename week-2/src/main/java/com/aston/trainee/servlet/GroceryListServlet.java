@@ -12,8 +12,18 @@ import java.io.IOException;
 
 @WebServlet("/lists/*")
 public class GroceryListServlet extends HttpServlet {
-    private final GroceryListService groceryListService = new GroceryListService();
-    private final JsonHttpMessageHelper messageHelper = new JsonHttpMessageHelper();
+    private final GroceryListService groceryListService;
+    private final JsonHttpMessageHelper messageHelper;
+
+    public GroceryListServlet() {
+        this.groceryListService = new GroceryListService();
+        this.messageHelper = new JsonHttpMessageHelper();
+    }
+
+    public GroceryListServlet(GroceryListService groceryListService, JsonHttpMessageHelper messageHelper) {
+        this.groceryListService = groceryListService;
+        this.messageHelper = messageHelper;
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

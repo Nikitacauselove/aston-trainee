@@ -12,8 +12,18 @@ import java.io.IOException;
 
 @WebServlet("/authors/*")
 public class AuthorServlet extends HttpServlet {
-    private final AuthorService authorService = new AuthorService();
-    private final JsonHttpMessageHelper messageHelper = new JsonHttpMessageHelper();
+    private final AuthorService authorService;
+    private final JsonHttpMessageHelper messageHelper;
+
+    public AuthorServlet() {
+        this.authorService = new AuthorService();
+        messageHelper = new JsonHttpMessageHelper();
+    }
+
+    public AuthorServlet(AuthorService authorService, JsonHttpMessageHelper messageHelper) {
+        this.authorService = authorService;
+        this.messageHelper = messageHelper;
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

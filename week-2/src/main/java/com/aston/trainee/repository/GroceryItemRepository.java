@@ -24,7 +24,7 @@ public class GroceryItemRepository implements BaseRepository<GroceryItem> {
     }
 
     public GroceryItemRepository(ConnectionManager connectionManager) {
-        this.connectionManager = new ConnectionManager();
+        this.connectionManager = connectionManager;
     }
 
     public GroceryItem create(GroceryItem groceryItem) {
