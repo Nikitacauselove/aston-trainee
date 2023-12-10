@@ -2,6 +2,7 @@ package com.aston.trainee.servlet;
 
 import com.aston.trainee.dto.AuthorDto;
 import com.aston.trainee.service.AuthorService;
+import com.aston.trainee.service.impl.AuthorServiceImpl;
 import com.aston.trainee.util.JsonHttpMessageHelper;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ public class AuthorServlet extends HttpServlet {
     private final JsonHttpMessageHelper messageHelper;
 
     public AuthorServlet() {
-        this.authorService = new AuthorService();
+        this.authorService = new AuthorServiceImpl();
         messageHelper = new JsonHttpMessageHelper();
     }
 

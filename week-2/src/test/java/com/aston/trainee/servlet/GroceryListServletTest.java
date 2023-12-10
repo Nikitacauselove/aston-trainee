@@ -1,7 +1,7 @@
 package com.aston.trainee.servlet;
 
 import com.aston.trainee.dto.GroceryListDto;
-import com.aston.trainee.service.GroceryListService;
+import com.aston.trainee.service.impl.GroceryListServiceImpl;
 import com.aston.trainee.util.Expected;
 import com.aston.trainee.util.JsonHttpMessageHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ public class GroceryListServletTest {
     @Mock
     private HttpServletResponse resp;
     @Mock
-    private GroceryListService groceryListService;
+    private GroceryListServiceImpl groceryListServiceImpl;
     @Mock
     private JsonHttpMessageHelper messageHelper;
 
@@ -35,13 +35,13 @@ public class GroceryListServletTest {
 
     @BeforeEach
     void beforeEach() {
-        groceryListServlet = new GroceryListServlet(groceryListService, messageHelper);
+        groceryListServlet = new GroceryListServlet(groceryListServiceImpl, messageHelper);
     }
 
     @Test
     void doPost() throws IOException {
         when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(Expected.GROCERY_LIST_DTO);
-        when(groceryListService.create(any(GroceryListDto.class))).thenReturn(Expected.GROCERY_LIST_DTO);
+        when(groceryListServiceImpl.create(any(GroceryListDto.class))).thenReturn(Expected.GROCERY_LIST_DTO);
 
         groceryListServlet.doPost(req, resp);
 
@@ -51,7 +51,7 @@ public class GroceryListServletTest {
 
     @Test
     void doGet() throws IOException {
-        when(groceryListService.read()).thenReturn(List.of(Expected.GROCERY_LIST_DTO));
+        when(groceryListServiceImpl.read()).thenReturn(List.of(Expected.GROCERY_LIST_DTO));
 
         groceryListServlet.doGet(req, resp);
 
@@ -62,7 +62,7 @@ public class GroceryListServletTest {
     void doPut() throws IOException {
         when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(Expected.GROCERY_LIST_DTO);
         when(req.getPathInfo()).thenReturn("/1");
-        when(groceryListService.update(anyLong(), any(GroceryListDto.class))).thenReturn(Expected.GROCERY_LIST_DTO);
+        when(groceryListServiceImpl.update(anyLong(), any(GroceryListDto.class))).thenReturn(Expected.GROCERY_LIST_DTO);
 
         groceryListServlet.doPut(req, resp);
 
@@ -76,6 +76,6 @@ public class GroceryListServletTest {
         groceryListServlet.doDelete(req, resp);
 
         verify(resp).setStatus(HttpServletResponse.SC_NO_CONTENT);
-        verify(groceryListService).delete(anyLong());
+        verify(groceryListServiceImpl).delete(anyLong());
     }
 }

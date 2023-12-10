@@ -1,7 +1,7 @@
 package com.aston.trainee.servlet;
 
 import com.aston.trainee.dto.AuthorDto;
-import com.aston.trainee.service.AuthorService;
+import com.aston.trainee.service.impl.AuthorServiceImpl;
 import com.aston.trainee.util.Expected;
 import com.aston.trainee.util.JsonHttpMessageHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ public class AuthorServletTest {
     @Mock
     private HttpServletResponse resp;
     @Mock
-    private AuthorService authorService;
+    private AuthorServiceImpl authorServiceImpl;
     @Mock
     private JsonHttpMessageHelper messageHelper;
 
@@ -36,13 +36,13 @@ public class AuthorServletTest {
 
     @BeforeEach
     void beforeEach() {
-        this.authorServlet = new AuthorServlet(authorService, messageHelper);
+        this.authorServlet = new AuthorServlet(authorServiceImpl, messageHelper);
     }
 
     @Test
     void doPost() throws IOException {
         when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(Expected.AUTHOR_DTO);
-        when(authorService.create(any(AuthorDto.class))).thenReturn(Expected.AUTHOR_DTO);
+        when(authorServiceImpl.create(any(AuthorDto.class))).thenReturn(Expected.AUTHOR_DTO);
 
         authorServlet.doPost(req, resp);
 
@@ -52,7 +52,7 @@ public class AuthorServletTest {
 
     @Test
     void doGet() throws IOException {
-        when(authorService.read()).thenReturn(List.of(Expected.AUTHOR_DTO));
+        when(authorServiceImpl.read()).thenReturn(List.of(Expected.AUTHOR_DTO));
 
         authorServlet.doGet(req, resp);
 
@@ -63,7 +63,7 @@ public class AuthorServletTest {
     void doPut() throws IOException {
         when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(Expected.AUTHOR_DTO);
         when(req.getPathInfo()).thenReturn("/1");
-        when(authorService.update(anyLong(), any(AuthorDto.class))).thenReturn(Expected.AUTHOR_DTO);
+        when(authorServiceImpl.update(anyLong(), any(AuthorDto.class))).thenReturn(Expected.AUTHOR_DTO);
 
         authorServlet.doPut(req, resp);
 
@@ -77,6 +77,6 @@ public class AuthorServletTest {
         authorServlet.doDelete(req, resp);
 
         verify(resp).setStatus(HttpServletResponse.SC_NO_CONTENT);
-        verify(authorService).delete(anyLong());
+        verify(authorServiceImpl).delete(anyLong());
     }
 }

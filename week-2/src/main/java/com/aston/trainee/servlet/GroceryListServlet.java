@@ -2,6 +2,7 @@ package com.aston.trainee.servlet;
 
 import com.aston.trainee.dto.GroceryListDto;
 import com.aston.trainee.service.GroceryListService;
+import com.aston.trainee.service.impl.GroceryListServiceImpl;
 import com.aston.trainee.util.JsonHttpMessageHelper;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,11 +17,11 @@ public class GroceryListServlet extends HttpServlet {
     private final JsonHttpMessageHelper messageHelper;
 
     public GroceryListServlet() {
-        this.groceryListService = new GroceryListService();
+        this.groceryListService = new GroceryListServiceImpl();
         this.messageHelper = new JsonHttpMessageHelper();
     }
 
-    public GroceryListServlet(GroceryListService groceryListService, JsonHttpMessageHelper messageHelper) {
+    public GroceryListServlet(GroceryListServiceImpl groceryListService, JsonHttpMessageHelper messageHelper) {
         this.groceryListService = groceryListService;
         this.messageHelper = messageHelper;
     }

@@ -1,5 +1,6 @@
 package com.aston.trainee.repository;
 
+import com.aston.trainee.repository.impl.GroceryItemRepositoryImpl;
 import com.aston.trainee.util.ConnectionManager;
 import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +41,7 @@ public class GroceryItemRepositoryTest {
     void beforeEach() throws SQLException {
         when(connectionManager.getConnection()).thenReturn(connection);
 
-        groceryItemRepository = new GroceryItemRepository(connectionManager);
+        groceryItemRepository = new GroceryItemRepositoryImpl(connectionManager);
     }
 
     @Test

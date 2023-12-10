@@ -2,6 +2,7 @@ package com.aston.trainee.service;
 
 import com.aston.trainee.entity.Author;
 import com.aston.trainee.repository.AuthorRepository;
+import com.aston.trainee.service.impl.AuthorServiceImpl;
 import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,11 +22,12 @@ import static org.mockito.Mockito.when;
 public class AuthorServiceTest {
     @Mock
     private AuthorRepository authorRepository;
+
     private AuthorService authorService;
 
     @BeforeEach
     void beforeEach() {
-        authorService = new AuthorService(authorRepository);
+        authorService = new AuthorServiceImpl(authorRepository);
     }
 
     @Test

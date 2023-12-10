@@ -2,6 +2,7 @@ package com.aston.trainee.service;
 
 import com.aston.trainee.entity.GroceryItem;
 import com.aston.trainee.repository.GroceryItemRepository;
+import com.aston.trainee.service.impl.GroceryItemServiceImpl;
 import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,11 +22,12 @@ import static org.mockito.Mockito.when;
 public class GroceryItemServiceTest {
     @Mock
     private GroceryItemRepository groceryItemRepository;
+
     private GroceryItemService groceryItemService;
 
     @BeforeEach
     void beforeEach() {
-        groceryItemService = new GroceryItemService(groceryItemRepository);
+        groceryItemService = new GroceryItemServiceImpl(groceryItemRepository);
     }
 
     @Test

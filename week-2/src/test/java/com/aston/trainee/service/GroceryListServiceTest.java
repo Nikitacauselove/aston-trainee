@@ -4,6 +4,7 @@ import com.aston.trainee.entity.GroceryList;
 import com.aston.trainee.repository.AuthorRepository;
 import com.aston.trainee.repository.GroceryItemRepository;
 import com.aston.trainee.repository.GroceryListRepository;
+import com.aston.trainee.service.impl.GroceryListServiceImpl;
 import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ public class GroceryListServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        this.groceryListService = new GroceryListService(authorRepository, groceryItemRepository, groceryListRepository);
+        this.groceryListService = new GroceryListServiceImpl(authorRepository, groceryItemRepository, groceryListRepository);
     }
 
     @Test

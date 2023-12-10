@@ -1,5 +1,6 @@
 package com.aston.trainee.repository;
 
+import com.aston.trainee.repository.impl.AuthorRepositoryImpl;
 import com.aston.trainee.util.ConnectionManager;
 import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +41,7 @@ public class AuthorRepositoryTest {
     void beforeEach() throws SQLException {
         when(connectionManager.getConnection()).thenReturn(connection);
 
-        authorRepository = new AuthorRepository(connectionManager);
+        authorRepository = new AuthorRepositoryImpl(connectionManager);
     }
 
     @Test
