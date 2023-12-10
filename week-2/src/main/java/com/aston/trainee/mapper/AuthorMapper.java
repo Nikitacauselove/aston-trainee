@@ -8,19 +8,17 @@ import java.util.List;
 
 @UtilityClass
 public class AuthorMapper {
-    public Author toAuthor(Long id, AuthorDto authorDto) {
-        Author author = new Author();
-
-        author.setId(id);
-        author.setName(authorDto.getName());
-        return author;
+    public Author fromAuthorDto(Long id, AuthorDto authorDto) {
+        return Author.builder()
+                .id(id)
+                .name(authorDto.getName())
+                .build();
     }
 
     public AuthorDto toAuthorDto(Author author) {
-        AuthorDto authorDto = new AuthorDto();
-
-        authorDto.setName(author.getName());
-        return authorDto;
+        return AuthorDto.builder()
+                .name(author.getName())
+                .build();
     }
 
     public List<AuthorDto> toAuthorDto(List<Author> authors) {

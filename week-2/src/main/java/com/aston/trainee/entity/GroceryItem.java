@@ -1,6 +1,7 @@
 package com.aston.trainee.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import java.util.Objects;
 
 @AllArgsConstructor
+@Builder
 @Getter
 @NoArgsConstructor
 @Setter

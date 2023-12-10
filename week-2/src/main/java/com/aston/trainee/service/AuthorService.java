@@ -19,7 +19,7 @@ public class AuthorService implements BaseService<AuthorDto> {
     }
 
     public AuthorDto create(AuthorDto authorDto) {
-        Author author = AuthorMapper.toAuthor(null, authorDto);
+        Author author = AuthorMapper.fromAuthorDto(null, authorDto);
 
         return AuthorMapper.toAuthorDto(authorRepository.create(author));
     }
@@ -29,7 +29,7 @@ public class AuthorService implements BaseService<AuthorDto> {
     }
 
     public AuthorDto update(Long id, AuthorDto authorDto) {
-        Author updatedAuthor = AuthorMapper.toAuthor(id, authorDto);
+        Author updatedAuthor = AuthorMapper.fromAuthorDto(id, authorDto);
 
         return AuthorMapper.toAuthorDto(authorRepository.update(updatedAuthor));
     }

@@ -10,25 +10,24 @@ import java.util.List;
 
 @UtilityClass
 public class GroceryListMapper {
-    public GroceryList toGroceryList(Long id, Author author, List<GroceryItem> items) {
-        GroceryList groceryList = new GroceryList();
-
-        groceryList.setId(id);
-        groceryList.setAuthor(author);
-        groceryList.setItems(items);
-        return groceryList;
+    public GroceryList fromGroceryListDto(Long id, Author author, List<GroceryItem> items) {
+        return GroceryList.builder()
+                .id(id)
+                .author(author)
+                .items(items)
+                .build();
     }
 
     public GroceryListDto toGroceryListDto(GroceryList groceryList) {
-        GroceryListDto groceryListDto = new GroceryListDto();
         List<String> items = groceryList.getItems()
                 .stream()
                 .map(GroceryItem::getName)
                 .toList();
 
-        groceryListDto.setAuthorId(groceryList.getAuthor().getId());
-        groceryListDto.setItems(items);
-        return groceryListDto;
+        return GroceryListDto.builder()
+                .authorId(groceryList.getAuthor().getId())
+                .items(items)
+                .build();
     }
 
     public List<GroceryListDto> toGroceryListDto(List<GroceryList> groceryLists) {

@@ -8,19 +8,17 @@ import java.util.List;
 
 @UtilityClass
 public class GroceryItemMapper {
-    public GroceryItem toGroceryItem(Long id, GroceryItemDto groceryItemDto) {
-        GroceryItem groceryItem = new GroceryItem();
-
-        groceryItem.setId(id);
-        groceryItem.setName(groceryItemDto.getName());
-        return groceryItem;
+    public GroceryItem fromGroceryItemDto(Long id, GroceryItemDto groceryItemDto) {
+        return GroceryItem.builder()
+                .id(id)
+                .name(groceryItemDto.getName())
+                .build();
     }
 
     public GroceryItemDto toGroceryItemDto(GroceryItem groceryItem) {
-        GroceryItemDto groceryItemDto = new GroceryItemDto();
-
-        groceryItemDto.setName(groceryItem.getName());
-        return groceryItemDto;
+        return GroceryItemDto.builder()
+                .name(groceryItem.getName())
+                .build();
     }
 
     public List<GroceryItemDto> toGroceryItemDto(List<GroceryItem> groceryItems) {

@@ -1,17 +1,17 @@
 package com.aston.trainee.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
+@Builder
 @Getter
 @NoArgsConstructor
-@Setter
 public class GroceryListDto {
     private Long authorId;
     private List<String> items;

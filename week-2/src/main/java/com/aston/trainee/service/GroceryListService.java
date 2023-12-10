@@ -31,7 +31,7 @@ public class GroceryListService implements BaseService<GroceryListDto> {
     public GroceryListDto create(GroceryListDto groceryListDto) {
         Author author = authorRepository.readById(groceryListDto.getAuthorId());
         List<GroceryItem> items = groceryListDto.getItems().stream().map(groceryItemRepository::readByName).toList();
-        GroceryList groceryList = GroceryListMapper.toGroceryList(null, author, items);
+        GroceryList groceryList = GroceryListMapper.fromGroceryListDto(null, author, items);
 
         return GroceryListMapper.toGroceryListDto(groceryListRepository.create(groceryList));
     }
@@ -43,7 +43,7 @@ public class GroceryListService implements BaseService<GroceryListDto> {
     public GroceryListDto update(Long id, GroceryListDto groceryListDto) {
         Author author = authorRepository.readById(groceryListDto.getAuthorId());
         List<GroceryItem> items = groceryListDto.getItems().stream().map(groceryItemRepository::readByName).toList();
-        GroceryList updatedGroceryList = GroceryListMapper.toGroceryList(id, author, items);
+        GroceryList updatedGroceryList = GroceryListMapper.fromGroceryListDto(id, author, items);
 
         return GroceryListMapper.toGroceryListDto(groceryListRepository.update(updatedGroceryList));
     }

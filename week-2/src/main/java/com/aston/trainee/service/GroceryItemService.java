@@ -19,7 +19,7 @@ public class GroceryItemService implements BaseService<GroceryItemDto> {
     }
 
     public GroceryItemDto create(GroceryItemDto groceryItemDto) {
-        GroceryItem groceryItem = GroceryItemMapper.toGroceryItem(null, groceryItemDto);
+        GroceryItem groceryItem = GroceryItemMapper.fromGroceryItemDto(null, groceryItemDto);
 
         return GroceryItemMapper.toGroceryItemDto(groceryItemRepository.create(groceryItem));
     }
@@ -29,7 +29,7 @@ public class GroceryItemService implements BaseService<GroceryItemDto> {
     }
 
     public GroceryItemDto update(Long id, GroceryItemDto groceryItemDto) {
-        GroceryItem updatedGroceryItem = GroceryItemMapper.toGroceryItem(id, groceryItemDto);
+        GroceryItem updatedGroceryItem = GroceryItemMapper.fromGroceryItemDto(id, groceryItemDto);
 
         return GroceryItemMapper.toGroceryItemDto(groceryItemRepository.update(updatedGroceryItem));
     }
