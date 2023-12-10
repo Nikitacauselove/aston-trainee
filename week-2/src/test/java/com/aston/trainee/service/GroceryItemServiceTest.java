@@ -1,8 +1,8 @@
 package com.aston.trainee.service;
 
-import com.aston.trainee.dto.GroceryItemDto;
 import com.aston.trainee.entity.GroceryItem;
 import com.aston.trainee.repository.GroceryItemRepository;
+import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,9 +23,6 @@ public class GroceryItemServiceTest {
     private GroceryItemRepository groceryItemRepository;
     private GroceryItemService groceryItemService;
 
-    private final GroceryItemDto groceryItemDto = new GroceryItemDto("Apples");
-    private final GroceryItem groceryItem = new GroceryItem(1L, "Apples");
-
     @BeforeEach
     void beforeEach() {
         groceryItemService = new GroceryItemService(groceryItemRepository);
@@ -33,23 +30,23 @@ public class GroceryItemServiceTest {
 
     @Test
     void create() {
-        when(groceryItemRepository.create(any(GroceryItem.class))).thenReturn(groceryItem);
+        when(groceryItemRepository.create(any(GroceryItem.class))).thenReturn(Expected.GROCERY_ITEM);
 
-        assertEquals(groceryItemDto, groceryItemService.create(groceryItemDto));
+        assertEquals(Expected.GROCERY_ITEM_DTO, groceryItemService.create(Expected.GROCERY_ITEM_DTO));
     }
 
     @Test
     void read() {
-        when(groceryItemRepository.read()).thenReturn(List.of(groceryItem));
+        when(groceryItemRepository.read()).thenReturn(List.of(Expected.GROCERY_ITEM));
 
-        assertEquals(List.of(groceryItemDto), groceryItemService.read());
+        assertEquals(List.of(Expected.GROCERY_ITEM_DTO), groceryItemService.read());
     }
 
     @Test
     void update() {
-        when(groceryItemRepository.update(any(GroceryItem.class))).thenReturn(groceryItem);
+        when(groceryItemRepository.update(any(GroceryItem.class))).thenReturn(Expected.GROCERY_ITEM);
 
-        assertEquals(groceryItemDto, groceryItemService.update(1L, groceryItemDto));
+        assertEquals(Expected.GROCERY_ITEM_DTO, groceryItemService.update(1L, Expected.GROCERY_ITEM_DTO));
     }
 
     @Test

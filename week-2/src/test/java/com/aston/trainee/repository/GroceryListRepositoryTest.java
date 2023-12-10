@@ -1,9 +1,7 @@
 package com.aston.trainee.repository;
 
-import com.aston.trainee.entity.Author;
-import com.aston.trainee.entity.GroceryItem;
-import com.aston.trainee.entity.GroceryList;
 import com.aston.trainee.util.ConnectionManager;
+import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,9 +41,6 @@ public class GroceryListRepositoryTest {
     private GroceryItemRepository groceryItemRepository;
 
     private GroceryListRepository groceryListRepository;
-    private final Author author = new Author(1L, "Callan");
-    private final GroceryItem groceryItem = new GroceryItem(1L, "Apples");
-    private final GroceryList groceryList = new GroceryList(1L, author, List.of(groceryItem));
 
     @BeforeEach
     void beforeEach() throws SQLException {
@@ -62,7 +57,7 @@ public class GroceryListRepositoryTest {
         when(preparedStatement.getGeneratedKeys().getLong(anyString())).thenReturn(1L);
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
 
-        assertEquals(groceryList, groceryListRepository.create(groceryList));
+        assertEquals(Expected.GROCERY_LIST, groceryListRepository.create(Expected.GROCERY_LIST));
     }
 
     @Test
@@ -70,18 +65,18 @@ public class GroceryListRepositoryTest {
         when(connection.createStatement()).thenReturn(statement);
         when(statement.executeQuery(anyString())).thenReturn(resultSet);
         when(resultSet.next()).thenReturn(true).thenReturn(false);
-        when(authorRepository.readById(anyLong())).thenReturn(author);
-        when(groceryItemRepository.readByListId(anyLong())).thenReturn(List.of(groceryItem));
+        when(authorRepository.readById(anyLong())).thenReturn(Expected.AUTHOR);
+        when(groceryItemRepository.readByListId(anyLong())).thenReturn(List.of(Expected.GROCERY_ITEM));
         when(resultSet.getLong(anyString())).thenReturn(1L);
 
-        assertEquals(List.of(groceryList), groceryListRepository.read());
+        assertEquals(List.of(Expected.GROCERY_LIST), groceryListRepository.read());
     }
 
     @Test
     void update() throws SQLException {
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
 
-        groceryListRepository.update(groceryList);
+        groceryListRepository.update(Expected.GROCERY_LIST);
 
         verify(preparedStatement).setLong(2, 1L);
         verify(preparedStatement, times(2)).executeUpdate();

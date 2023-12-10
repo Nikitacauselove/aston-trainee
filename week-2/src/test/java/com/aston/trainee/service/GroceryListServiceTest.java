@@ -1,12 +1,10 @@
 package com.aston.trainee.service;
 
-import com.aston.trainee.dto.GroceryListDto;
-import com.aston.trainee.entity.Author;
-import com.aston.trainee.entity.GroceryItem;
 import com.aston.trainee.entity.GroceryList;
 import com.aston.trainee.repository.AuthorRepository;
 import com.aston.trainee.repository.GroceryItemRepository;
 import com.aston.trainee.repository.GroceryListRepository;
+import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,11 +30,6 @@ public class GroceryListServiceTest {
     private GroceryListRepository groceryListRepository;
 
     private GroceryListService groceryListService;
-    private final Author author = new Author(1L, "Callan");
-    private final GroceryItem groceryItem = new GroceryItem(1L, "Apples");
-    private final GroceryList groceryList = new GroceryList(1L, author, List.of(groceryItem));
-
-    private final GroceryListDto groceryListDto = new GroceryListDto(1L, List.of("Apples"));
 
     @BeforeEach
     void beforeEach() {
@@ -45,27 +38,27 @@ public class GroceryListServiceTest {
 
     @Test
     void create() {
-        when(authorRepository.readById(anyLong())).thenReturn(author);
-        when(groceryItemRepository.readByName(anyString())).thenReturn(groceryItem);
-        when(groceryListRepository.create(any(GroceryList.class))).thenReturn(groceryList);
+        when(authorRepository.readById(anyLong())).thenReturn(Expected.AUTHOR);
+        when(groceryItemRepository.readByName(anyString())).thenReturn(Expected.GROCERY_ITEM);
+        when(groceryListRepository.create(any(GroceryList.class))).thenReturn(Expected.GROCERY_LIST);
 
-        assertEquals(groceryListDto, groceryListService.create(groceryListDto));
+        assertEquals(Expected.GROCERY_LIST_DTO, groceryListService.create(Expected.GROCERY_LIST_DTO));
     }
 
     @Test
     void read() {
-        when(groceryListRepository.read()).thenReturn(List.of(groceryList));
+        when(groceryListRepository.read()).thenReturn(List.of(Expected.GROCERY_LIST));
 
-        assertEquals(List.of(groceryListDto), groceryListService.read());
+        assertEquals(List.of(Expected.GROCERY_LIST_DTO), groceryListService.read());
     }
 
     @Test
     void update() {
-        when(authorRepository.readById(anyLong())).thenReturn(author);
-        when(groceryItemRepository.readByName(anyString())).thenReturn(groceryItem);
-        when(groceryListRepository.update(any(GroceryList.class))).thenReturn(groceryList);
+        when(authorRepository.readById(anyLong())).thenReturn(Expected.AUTHOR);
+        when(groceryItemRepository.readByName(anyString())).thenReturn(Expected.GROCERY_ITEM);
+        when(groceryListRepository.update(any(GroceryList.class))).thenReturn(Expected.GROCERY_LIST);
 
-        assertEquals(groceryListDto, groceryListService.update(1L, groceryListDto));
+        assertEquals(Expected.GROCERY_LIST_DTO, groceryListService.update(1L, Expected.GROCERY_LIST_DTO));
     }
 
     @Test

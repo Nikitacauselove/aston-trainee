@@ -2,6 +2,7 @@ package com.aston.trainee.servlet;
 
 import com.aston.trainee.dto.AuthorDto;
 import com.aston.trainee.service.AuthorService;
+import com.aston.trainee.util.Expected;
 import com.aston.trainee.util.JsonHttpMessageHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,6 @@ public class AuthorServletTest {
     private JsonHttpMessageHelper messageHelper;
 
     private AuthorServlet authorServlet;
-    private final AuthorDto authorDto = new AuthorDto("Callan");
 
     @BeforeEach
     void beforeEach() {
@@ -41,8 +41,8 @@ public class AuthorServletTest {
 
     @Test
     void doPost() throws IOException {
-        when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(authorDto);
-        when(authorService.create(any(AuthorDto.class))).thenReturn(authorDto);
+        when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(Expected.AUTHOR_DTO);
+        when(authorService.create(any(AuthorDto.class))).thenReturn(Expected.AUTHOR_DTO);
 
         authorServlet.doPost(req, resp);
 
@@ -52,7 +52,7 @@ public class AuthorServletTest {
 
     @Test
     void doGet() throws IOException {
-        when(authorService.read()).thenReturn(List.of(authorDto));
+        when(authorService.read()).thenReturn(List.of(Expected.AUTHOR_DTO));
 
         authorServlet.doGet(req, resp);
 
@@ -61,9 +61,9 @@ public class AuthorServletTest {
 
     @Test
     void doPut() throws IOException {
-        when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(authorDto);
+        when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(Expected.AUTHOR_DTO);
         when(req.getPathInfo()).thenReturn("/1");
-        when(authorService.update(anyLong(), any(AuthorDto.class))).thenReturn(authorDto);
+        when(authorService.update(anyLong(), any(AuthorDto.class))).thenReturn(Expected.AUTHOR_DTO);
 
         authorServlet.doPut(req, resp);
 

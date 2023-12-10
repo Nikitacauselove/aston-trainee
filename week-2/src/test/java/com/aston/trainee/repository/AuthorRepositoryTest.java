@@ -1,7 +1,7 @@
 package com.aston.trainee.repository;
 
-import com.aston.trainee.entity.Author;
 import com.aston.trainee.util.ConnectionManager;
+import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,6 @@ public class AuthorRepositoryTest {
     private ResultSet resultSet;
 
     private AuthorRepository authorRepository;
-    private final Author author = new Author(1L, "Callan");
 
     @BeforeEach
     void beforeEach() throws SQLException {
@@ -51,7 +50,7 @@ public class AuthorRepositoryTest {
         when(preparedStatement.getGeneratedKeys().next()).thenReturn(true);
         when(preparedStatement.getGeneratedKeys().getLong(anyString())).thenReturn(1L);
 
-        assertEquals(author, authorRepository.create(author));
+        assertEquals(Expected.AUTHOR, authorRepository.create(Expected.AUTHOR));
     }
 
     @Test
@@ -62,14 +61,14 @@ public class AuthorRepositoryTest {
         when(resultSet.getLong(anyString())).thenReturn(1L);
         when(resultSet.getString(anyString())).thenReturn("Callan");
 
-        assertEquals(List.of(author), authorRepository.read());
+        assertEquals(List.of(Expected.AUTHOR), authorRepository.read());
     }
 
     @Test
     void update() throws SQLException {
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
 
-        authorRepository.update(author);
+        authorRepository.update(Expected.AUTHOR);
 
         verify(preparedStatement).setString(1, "Callan");
         verify(preparedStatement).setLong(2, 1L);
@@ -94,6 +93,6 @@ public class AuthorRepositoryTest {
         when(resultSet.getLong(anyString())).thenReturn(1L);
         when(resultSet.getString(anyString())).thenReturn("Callan");
 
-        assertEquals(author, authorRepository.readById(1L));
+        assertEquals(Expected.AUTHOR, authorRepository.readById(1L));
     }
 }

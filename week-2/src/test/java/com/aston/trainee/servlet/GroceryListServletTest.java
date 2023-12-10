@@ -2,6 +2,7 @@ package com.aston.trainee.servlet;
 
 import com.aston.trainee.dto.GroceryListDto;
 import com.aston.trainee.service.GroceryListService;
+import com.aston.trainee.util.Expected;
 import com.aston.trainee.util.JsonHttpMessageHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,6 @@ public class GroceryListServletTest {
     private JsonHttpMessageHelper messageHelper;
 
     private GroceryListServlet groceryListServlet;
-    private final GroceryListDto groceryListDto = new GroceryListDto(1L, List.of("Apples"));
 
     @BeforeEach
     void beforeEach() {
@@ -40,8 +40,8 @@ public class GroceryListServletTest {
 
     @Test
     void doPost() throws IOException {
-        when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(groceryListDto);
-        when(groceryListService.create(any(GroceryListDto.class))).thenReturn(groceryListDto);
+        when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(Expected.GROCERY_LIST_DTO);
+        when(groceryListService.create(any(GroceryListDto.class))).thenReturn(Expected.GROCERY_LIST_DTO);
 
         groceryListServlet.doPost(req, resp);
 
@@ -51,7 +51,7 @@ public class GroceryListServletTest {
 
     @Test
     void doGet() throws IOException {
-        when(groceryListService.read()).thenReturn(List.of(groceryListDto));
+        when(groceryListService.read()).thenReturn(List.of(Expected.GROCERY_LIST_DTO));
 
         groceryListServlet.doGet(req, resp);
 
@@ -60,9 +60,9 @@ public class GroceryListServletTest {
 
     @Test
     void doPut() throws IOException {
-        when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(groceryListDto);
+        when(messageHelper.read(any(HttpServletRequest.class), any())).thenReturn(Expected.GROCERY_LIST_DTO);
         when(req.getPathInfo()).thenReturn("/1");
-        when(groceryListService.update(anyLong(), any(GroceryListDto.class))).thenReturn(groceryListDto);
+        when(groceryListService.update(anyLong(), any(GroceryListDto.class))).thenReturn(Expected.GROCERY_LIST_DTO);
 
         groceryListServlet.doPut(req, resp);
 

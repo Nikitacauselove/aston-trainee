@@ -1,8 +1,8 @@
 package com.aston.trainee.service;
 
-import com.aston.trainee.dto.AuthorDto;
 import com.aston.trainee.entity.Author;
 import com.aston.trainee.repository.AuthorRepository;
+import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,9 +23,6 @@ public class AuthorServiceTest {
     private AuthorRepository authorRepository;
     private AuthorService authorService;
 
-    private final AuthorDto authorDto = new AuthorDto("Callan");
-    private final Author author = new Author(1L, "Callan");
-
     @BeforeEach
     void beforeEach() {
         authorService = new AuthorService(authorRepository);
@@ -33,23 +30,23 @@ public class AuthorServiceTest {
 
     @Test
     void create() {
-        when(authorRepository.create(any(Author.class))).thenReturn(author);
+        when(authorRepository.create(any(Author.class))).thenReturn(Expected.AUTHOR);
 
-        assertEquals(authorDto, authorService.create(authorDto));
+        assertEquals(Expected.AUTHOR_DTO, authorService.create(Expected.AUTHOR_DTO));
     }
 
     @Test
     void read() {
-        when(authorRepository.read()).thenReturn(List.of(author));
+        when(authorRepository.read()).thenReturn(List.of(Expected.AUTHOR));
 
-        assertEquals(List.of(authorDto), authorService.read());
+        assertEquals(List.of(Expected.AUTHOR_DTO), authorService.read());
     }
 
     @Test
     void update() {
-        when(authorRepository.update(any(Author.class))).thenReturn(author);
+        when(authorRepository.update(any(Author.class))).thenReturn(Expected.AUTHOR);
 
-        assertEquals(authorDto, authorService.update(1L, authorDto));
+        assertEquals(Expected.AUTHOR_DTO, authorService.update(1L, Expected.AUTHOR_DTO));
     }
 
     @Test

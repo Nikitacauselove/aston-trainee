@@ -1,7 +1,7 @@
 package com.aston.trainee.repository;
 
-import com.aston.trainee.entity.GroceryItem;
 import com.aston.trainee.util.ConnectionManager;
+import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,6 @@ public class GroceryItemRepositoryTest {
     private ResultSet resultSet;
 
     private GroceryItemRepository groceryItemRepository;
-    private final GroceryItem groceryItem = new GroceryItem(1L, "Apples");
 
     @BeforeEach
     void beforeEach() throws SQLException {
@@ -51,7 +50,7 @@ public class GroceryItemRepositoryTest {
         when(preparedStatement.getGeneratedKeys().next()).thenReturn(true);
         when(preparedStatement.getGeneratedKeys().getLong(anyString())).thenReturn(1L);
 
-        assertEquals(groceryItem, groceryItemRepository.create(groceryItem));
+        assertEquals(Expected.GROCERY_ITEM, groceryItemRepository.create(Expected.GROCERY_ITEM));
     }
 
     @Test
@@ -62,14 +61,14 @@ public class GroceryItemRepositoryTest {
         when(resultSet.getLong(anyString())).thenReturn(1L);
         when(resultSet.getString(anyString())).thenReturn("Apples");
 
-        assertEquals(List.of(groceryItem), groceryItemRepository.read());
+        assertEquals(List.of(Expected.GROCERY_ITEM), groceryItemRepository.read());
     }
 
     @Test
     void update() throws SQLException {
         when(connection.prepareStatement(anyString())).thenReturn(preparedStatement);
 
-        groceryItemRepository.update(groceryItem);
+        groceryItemRepository.update(Expected.GROCERY_ITEM);
 
         verify(preparedStatement).setString(1, "Apples");
         verify(preparedStatement).setLong(2, 1L);
@@ -94,7 +93,7 @@ public class GroceryItemRepositoryTest {
         when(resultSet.getLong(anyString())).thenReturn(1L);
         when(resultSet.getString(anyString())).thenReturn("Apples");
 
-        assertEquals(groceryItem, groceryItemRepository.readByName("Apples"));
+        assertEquals(Expected.GROCERY_ITEM, groceryItemRepository.readByName("Apples"));
     }
 
     @Test
@@ -105,6 +104,6 @@ public class GroceryItemRepositoryTest {
         when(resultSet.getLong(anyString())).thenReturn(1L);
         when(resultSet.getString(anyString())).thenReturn("Apples");
 
-        assertEquals(List.of(groceryItem), groceryItemRepository.readByListId(1L));
+        assertEquals(List.of(Expected.GROCERY_ITEM), groceryItemRepository.readByListId(1L));
     }
 }
