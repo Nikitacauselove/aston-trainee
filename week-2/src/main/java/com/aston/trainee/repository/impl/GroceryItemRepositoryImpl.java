@@ -1,7 +1,7 @@
 package com.aston.trainee.repository.impl;
 
 import com.aston.trainee.entity.GroceryItem;
-import com.aston.trainee.util.ConnectionManager;
+import com.aston.trainee.util.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,18 +17,18 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
     private final static String UPDATE_SQL = "update item set name = ? where id = ?";
     private final static String DELETE_SQL = "delete from item where id = ?";
 
-    private final ConnectionManager connectionManager;
+    private final ConnectionPool connectionPool;
 
     public GroceryItemRepositoryImpl() {
-        this.connectionManager = new ConnectionManager();
+        this.connectionPool = new ConnectionPool();
     }
 
-    public GroceryItemRepositoryImpl(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
+    public GroceryItemRepositoryImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     public GroceryItem create(GroceryItem groceryItem) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
 
             statement.setString(1, groceryItem.getName());
@@ -46,7 +46,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
 
     public List<GroceryItem> read() {
         List<GroceryItem> groceryItems = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             ResultSet resultSet = connection.createStatement().executeQuery(SELECT_SQL);
 
             while (resultSet.next()) {
@@ -63,7 +63,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
     }
 
     public GroceryItem update(GroceryItem updatedGroceryItem) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(UPDATE_SQL);
 
             statement.setString(1, updatedGroceryItem.getName());
@@ -76,7 +76,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
     }
 
     public void delete(Long id) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_SQL);
 
             statement.setLong(1, id);
@@ -88,7 +88,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
 
     public GroceryItem readByName(String name) {
         GroceryItem groceryItem = new GroceryItem();
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement("select * from item where name = ?");
 
             statement.setString(1, name);
@@ -106,7 +106,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
 
     public List<GroceryItem> readByListId(Long listId) {
         List<GroceryItem> groceryItems = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement("select id, name from list_item left join item on list_item.item_id = item.id where list_item.list_id = ?");
 
             statement.setLong(1, listId);

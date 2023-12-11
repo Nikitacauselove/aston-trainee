@@ -2,7 +2,7 @@ package com.aston.trainee.repository.impl;
 
 import com.aston.trainee.entity.Author;
 import com.aston.trainee.repository.AuthorRepository;
-import com.aston.trainee.util.ConnectionManager;
+import com.aston.trainee.util.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,18 +18,18 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     private final static String UPDATE_SQL = "update author set name = ? where id = ?";
     private final static String DELETE_SQL = "delete from author where id = ?";
 
-    private final ConnectionManager connectionManager;
+    private final ConnectionPool connectionPool;
 
     public AuthorRepositoryImpl() {
-        this.connectionManager = new ConnectionManager();
+        this.connectionPool = new ConnectionPool();
     }
 
-    public AuthorRepositoryImpl(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
+    public AuthorRepositoryImpl(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
 
     public Author create(Author author) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
 
             statement.setString(1, author.getName());
@@ -47,7 +47,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     public List<Author> read() {
         List<Author> authors = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             ResultSet resultSet = connection.createStatement().executeQuery(SELECT_SQL);
 
             while (resultSet.next()) {
@@ -64,7 +64,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     public Author update(Author updatedAuthor) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(UPDATE_SQL);
 
             statement.setString(1, updatedAuthor.getName());
@@ -77,7 +77,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
     }
 
     public void delete(Long id) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_SQL);
 
             statement.setLong(1, id);
@@ -89,7 +89,7 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     public Author readById(Long id) {
         Author author = new Author();
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement("select * from author where id = ?");
 
             statement.setLong(1, id);

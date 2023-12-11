@@ -5,7 +5,7 @@ import com.aston.trainee.entity.GroceryItem;
 import com.aston.trainee.entity.GroceryList;
 import com.aston.trainee.repository.AuthorRepository;
 import com.aston.trainee.repository.GroceryItemRepository;
-import com.aston.trainee.util.ConnectionManager;
+import com.aston.trainee.util.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,22 +22,22 @@ public class GroceryListRepositoryImpl implements com.aston.trainee.repository.G
 
     private final AuthorRepository authorRepositoryImpl;
     private final GroceryItemRepository groceryItemRepository;
-    private final ConnectionManager connectionManager;
+    private final ConnectionPool connectionPool;
 
     public GroceryListRepositoryImpl() {
-        this.connectionManager = new ConnectionManager();
+        this.connectionPool = new ConnectionPool();
         this.authorRepositoryImpl = new AuthorRepositoryImpl();
         this.groceryItemRepository = new GroceryItemRepositoryImpl();
     }
 
-    public GroceryListRepositoryImpl(ConnectionManager connectionManager, AuthorRepository authorRepository, GroceryItemRepository groceryItemRepository) {
-        this.connectionManager = connectionManager;
+    public GroceryListRepositoryImpl(ConnectionPool connectionPool, AuthorRepository authorRepository, GroceryItemRepository groceryItemRepository) {
+        this.connectionPool = connectionPool;
         this.authorRepositoryImpl = authorRepository;
         this.groceryItemRepository = groceryItemRepository;
     }
 
     public GroceryList create(GroceryList groceryList) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
 
             statement.setLong(1, groceryList.getAuthor().getId());
@@ -62,7 +62,7 @@ public class GroceryListRepositoryImpl implements com.aston.trainee.repository.G
 
     public List<GroceryList> read() {
         List<GroceryList> groceryLists = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             ResultSet resultSet = connection.createStatement().executeQuery(SELECT_SQL);
 
             while (resultSet.next()) {
@@ -82,7 +82,7 @@ public class GroceryListRepositoryImpl implements com.aston.trainee.repository.G
     }
 
     public GroceryList update(GroceryList groceryList) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement deleteRelationshipStatement = connection.prepareStatement("delete from list_item where list_id = ?");
             PreparedStatement relationshipStatement = connection.prepareStatement("insert into list_item (list_id, item_id) values (?, ?)");
 
@@ -101,7 +101,7 @@ public class GroceryListRepositoryImpl implements com.aston.trainee.repository.G
     }
 
     public void delete(Long id) {
-        try (Connection connection = connectionManager.getConnection()) {
+        try (Connection connection = connectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(DELETE_SQL);
 
             statement.setLong(1, id);

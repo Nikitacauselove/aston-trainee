@@ -1,7 +1,7 @@
 package com.aston.trainee.repository;
 
 import com.aston.trainee.repository.impl.GroceryListRepositoryImpl;
-import com.aston.trainee.util.ConnectionManager;
+import com.aston.trainee.util.ConnectionPool;
 import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class GroceryListRepositoryTest {
     @Mock
-    private ConnectionManager connectionManager;
+    private ConnectionPool connectionPool;
     @Mock
     private Connection connection;
     @Mock
@@ -45,9 +45,9 @@ public class GroceryListRepositoryTest {
 
     @BeforeEach
     void beforeEach() throws SQLException {
-        when(connectionManager.getConnection()).thenReturn(connection);
+        when(connectionPool.getConnection()).thenReturn(connection);
 
-        groceryListRepository = new GroceryListRepositoryImpl(connectionManager, authorRepository, groceryItemRepository);
+        groceryListRepository = new GroceryListRepositoryImpl(connectionPool, authorRepository, groceryItemRepository);
     }
 
     @Test

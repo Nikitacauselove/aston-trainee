@@ -1,7 +1,7 @@
 package com.aston.trainee.repository;
 
 import com.aston.trainee.repository.impl.AuthorRepositoryImpl;
-import com.aston.trainee.util.ConnectionManager;
+import com.aston.trainee.util.ConnectionPool;
 import com.aston.trainee.util.Expected;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class AuthorRepositoryTest {
     @Mock
-    private ConnectionManager connectionManager;
+    private ConnectionPool connectionPool;
     @Mock
     private Connection connection;
     @Mock
@@ -39,9 +39,9 @@ public class AuthorRepositoryTest {
 
     @BeforeEach
     void beforeEach() throws SQLException {
-        when(connectionManager.getConnection()).thenReturn(connection);
+        when(connectionPool.getConnection()).thenReturn(connection);
 
-        authorRepository = new AuthorRepositoryImpl(connectionManager);
+        authorRepository = new AuthorRepositoryImpl(connectionPool);
     }
 
     @Test
