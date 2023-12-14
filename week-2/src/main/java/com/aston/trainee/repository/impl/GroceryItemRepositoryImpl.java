@@ -1,7 +1,9 @@
 package com.aston.trainee.repository.impl;
 
 import com.aston.trainee.entity.GroceryItem;
+import com.aston.trainee.repository.GroceryItemRepository;
 import com.aston.trainee.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,8 +13,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.GroceryItemRepository {
+@Slf4j
+public class GroceryItemRepositoryImpl implements GroceryItemRepository {
     private final static String INSERT_SQL = "insert into item (name) values (?)";
+    private final static String SELECT_BY_ID_SQL = "select * from item where id = ?";
     private final static String SELECT_SQL = "select * from item";
     private final static String UPDATE_SQL = "update item set name = ? where id = ?";
     private final static String DELETE_SQL = "delete from item where id = ?";
@@ -39,7 +43,25 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
                 groceryItem.setId(generatedKeys.getLong("id"));
             }
         } catch (SQLException exception) {
-            System.out.println("При добавлении нового товара возникла ошибка");
+            log.error("При добавлении нового товара возникла ошибка");
+        }
+        return readById(groceryItem.getId());
+    }
+
+    public GroceryItem readById(Long id) {
+        GroceryItem groceryItem = new GroceryItem();
+        try (Connection connection = connectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_SQL);
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                groceryItem.setId(resultSet.getLong("id"));
+                groceryItem.setName(resultSet.getString("name"));
+            }
+        } catch (SQLException exception) {
+            log.error("При получении подробной информации о товаре возникла ошибка");
         }
         return groceryItem;
     }
@@ -57,7 +79,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
                 groceryItems.add(groceryItem);
             }
         } catch (SQLException exception) {
-            System.out.println("При поиске товаров возникла ошибка");
+            log.error("При поиске товаров возникла ошибка");
         }
         return groceryItems;
     }
@@ -70,9 +92,9 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
             statement.setLong(2, updatedGroceryItem.getId());
             statement.executeUpdate();
         } catch (SQLException exception) {
-            System.out.println("При изменении информации о товаре возникла ошибка");
+            log.error("При изменении информации о товаре возникла ошибка");
         }
-        return updatedGroceryItem;
+        return readById(updatedGroceryItem.getId());
     }
 
     public void delete(Long id) {
@@ -82,7 +104,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException exception) {
-            System.out.println("При удалении товара возникла ошибка");
+            log.error("При удалении товара возникла ошибка");
         }
     }
 
@@ -99,7 +121,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
                 groceryItem.setName(resultSet.getString("name"));
             }
         } catch (SQLException exception) {
-            System.out.println("При получении подробной информации о товаре по его названию возникла ошибка");
+            log.error("При получении подробной информации о товаре по его названию возникла ошибка");
         }
         return groceryItem;
     }
@@ -120,7 +142,7 @@ public class GroceryItemRepositoryImpl implements com.aston.trainee.repository.G
                 groceryItems.add(groceryItem);
             }
         } catch (SQLException exception) {
-            System.out.println("При поиске товаров по идентификатору списка покупок возникла ошибка");
+            log.error("При поиске товаров по идентификатору списка покупок возникла ошибка");
         }
         return groceryItems;
     }

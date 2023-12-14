@@ -4,13 +4,11 @@ import com.aston.trainee.dto.GroceryListDto;
 import com.aston.trainee.entity.Author;
 import com.aston.trainee.entity.GroceryItem;
 import com.aston.trainee.entity.GroceryList;
-import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
-@UtilityClass
 public class GroceryListMapper {
-    public GroceryList fromGroceryListDto(Long id, Author author, List<GroceryItem> items) {
+    public static GroceryList fromGroceryListDto(Long id, Author author, List<GroceryItem> items) {
         return GroceryList.builder()
                 .id(id)
                 .author(author)
@@ -18,7 +16,7 @@ public class GroceryListMapper {
                 .build();
     }
 
-    public GroceryListDto toGroceryListDto(GroceryList groceryList) {
+    public static GroceryListDto toGroceryListDto(GroceryList groceryList) {
         List<String> items = groceryList.getItems()
                 .stream()
                 .map(GroceryItem::getName)
@@ -30,7 +28,7 @@ public class GroceryListMapper {
                 .build();
     }
 
-    public List<GroceryListDto> toGroceryListDto(List<GroceryList> groceryLists) {
+    public static List<GroceryListDto> toGroceryListDto(List<GroceryList> groceryLists) {
         return groceryLists
                 .stream()
                 .map(GroceryListMapper::toGroceryListDto)

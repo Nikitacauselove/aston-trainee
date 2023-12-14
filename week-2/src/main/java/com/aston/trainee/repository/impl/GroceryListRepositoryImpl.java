@@ -5,7 +5,9 @@ import com.aston.trainee.entity.GroceryItem;
 import com.aston.trainee.entity.GroceryList;
 import com.aston.trainee.repository.AuthorRepository;
 import com.aston.trainee.repository.GroceryItemRepository;
+import com.aston.trainee.repository.GroceryListRepository;
 import com.aston.trainee.util.ConnectionPool;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,8 +17,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroceryListRepositoryImpl implements com.aston.trainee.repository.GroceryListRepository {
+@Slf4j
+public class GroceryListRepositoryImpl implements GroceryListRepository {
     private final static String INSERT_SQL = "insert into list (author_id) values (?)";
+    private final static String SELECT_BY_ID_SQL = "select * from list where id = ?";
     private final static String SELECT_SQL = "select * from list";
     private final static String DELETE_SQL = "delete from list where id = ?";
 
@@ -55,7 +59,29 @@ public class GroceryListRepositoryImpl implements com.aston.trainee.repository.G
                 }
             }
         } catch (SQLException exception) {
-            System.out.println("При добавлении нового списка покупок возникла ошибка");
+            log.error("При добавлении нового списка покупок возникла ошибка");
+        }
+        return readById(groceryList.getId());
+    }
+
+    public GroceryList readById(Long id) {
+        GroceryList groceryList = new GroceryList();
+        try (Connection connection = connectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID_SQL);
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                Author author = authorRepositoryImpl.readById(resultSet.getLong("author_id"));
+                List<GroceryItem> items = groceryItemRepository.readByListId(resultSet.getLong("id"));
+
+                groceryList.setId(resultSet.getLong("id"));
+                groceryList.setAuthor(author);
+                groceryList.setItems(items);
+            }
+        } catch (SQLException exception) {
+            log.error("При получении подробной информации о списке покупок возникла ошибка");
         }
         return groceryList;
     }
@@ -66,17 +92,10 @@ public class GroceryListRepositoryImpl implements com.aston.trainee.repository.G
             ResultSet resultSet = connection.createStatement().executeQuery(SELECT_SQL);
 
             while (resultSet.next()) {
-                GroceryList groceryList = new GroceryList();
-                Author author = authorRepositoryImpl.readById(resultSet.getLong("author_id"));
-                List<GroceryItem> items = groceryItemRepository.readByListId(resultSet.getLong("id"));
-
-                groceryList.setId(resultSet.getLong("id"));
-                groceryList.setAuthor(author);
-                groceryList.setItems(items);
-                groceryLists.add(groceryList);
+                groceryLists.add(readById(resultSet.getLong("id")));
             }
         } catch (SQLException exception) {
-            System.out.println("При поиске списков покупок возникла ошибка");
+            log.error("При поиске списков покупок возникла ошибка");
         }
         return groceryLists;
     }
@@ -95,9 +114,9 @@ public class GroceryListRepositoryImpl implements com.aston.trainee.repository.G
                 relationshipStatement.executeUpdate();
             }
         } catch (SQLException exception) {
-            System.out.println("При изменении информации о списке покупок возникла ошибка");
+            log.error("При изменении информации о списке покупок возникла ошибка");
         }
-        return groceryList;
+        return readById(groceryList.getId());
     }
 
     public void delete(Long id) {
@@ -107,7 +126,7 @@ public class GroceryListRepositoryImpl implements com.aston.trainee.repository.G
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException exception) {
-            System.out.println("При удалении списка покупок возникла ошибка");
+            log.error("При удалении списка покупок возникла ошибка");
         }
     }
 }
