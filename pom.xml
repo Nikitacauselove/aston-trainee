@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>week-1</module>
+        <module>week-2</module>
     </modules>
 
     <properties>
